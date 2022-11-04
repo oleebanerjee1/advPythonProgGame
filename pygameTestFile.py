@@ -19,7 +19,9 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.KEYDOWN:
-            key = event.key
+            if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or \
+                    (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
+                key = event.key
             #pygame.key.get_pressed()
 
     if key == pygame.K_LEFT:
