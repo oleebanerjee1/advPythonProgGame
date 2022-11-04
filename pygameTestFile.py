@@ -40,6 +40,7 @@ while run:
     window.fill((0, 0, 0))  # Fills the screen with black
     pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
+    #printing the mouth in different directions
     def mouthDown():
         point1 = (x + 20, y + 20)
         point2 = (x, y + 40)
@@ -64,6 +65,12 @@ while run:
         point3 = (x, y)
         arr = [point1, point2, point3]
         return arr
+    #if it reaches the boundaries of the screen stop and print game over
+    if x < 0 or y < 0 or x+40 == 500 or y+40 == 500:
+        vel = 0
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text = font.render('Game Over', True, (255, 0, 0))
+        window.blit(text, (0,0))
     pygame.display.update()
 
 pygame.quit()
