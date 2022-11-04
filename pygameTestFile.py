@@ -7,7 +7,7 @@ pygame.display.set_caption("Continuous Movement Test")
 x = 50
 y = 50
 width = 40
-height = 60
+height = 40
 vel = 5
 key = 0
 run = True
@@ -34,7 +34,7 @@ while run:
         y += vel
 
     window.fill((0, 0, 0))  # Fills the screen with black
-    pygame.draw.rect(window, (255, 0, 0), (x, y, width, height))
+    pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
     pygame.display.update()
 
 pygame.quit()
