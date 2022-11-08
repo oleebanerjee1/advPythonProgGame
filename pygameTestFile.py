@@ -15,6 +15,26 @@ key = 0
 pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
 run = True
 time = 0
+mazeLayout = """
+WWWWWWWWWW
+W   W    W
+W WWWWWW W
+W      W W
+WWW WWWWWW
+W W W  W W
+W   W    W
+W WWW W  W
+W     W  W
+WWWWWWWWEW
+""".splitlines()[1:]
+
+block = pygame.image.load("C:\\Users\\olee1\\Pictures\\block.png").convert()
+
+# Using blit to copy content from one surface to other
+window.blit(block, (0, 0))
+
+# paint screen one time
+pygame.display.flip()
 
 while run:
     pygame.time.delay(100)
