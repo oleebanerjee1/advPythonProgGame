@@ -1,21 +1,23 @@
 import pygame
 pygame.init()
 
-window = pygame.display.set_mode((500, 500))
+displayX = 500
+displayY = 500
+window = pygame.display.set_mode((displayX, displayY))
 pygame.display.set_caption("Continuous Movement Test")
 
-x = 0
-y = 0
-width = 40
-height = 40
+x = 230
+y = 230
+width = 20
+height = 20
 vel = 5
 key = 0
-pointArr = [(x + 20, y + 20), (x + 40, y + 40), (x + 40, y)]
+pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
 run = True
+time = 0
 
 while run:
     pygame.time.delay(100)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -40,37 +42,43 @@ while run:
     window.fill((0, 0, 0))  # Fills the screen with black
     pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
-    #printing the mouth in different directions
+    # quick blurb of instructions for a short amount of time
+    time += 1
+    if time < 50:
+        font = pygame.font.Font('freesansbold.ttf', 19)
+        text = font.render('Use the arrow keys to move your avatar up and down.', True, (255, 0, 0))
+        window.blit(text, (0, 0))
+    # Printing the mouth in different directions
     def mouthDown():
-        point1 = (x + 20, y + 20)
-        point2 = (x, y + 40)
-        point3 = (x + 40, y + 40)
+        point1 = (x + width/2, y + height/2)
+        point2 = (x, y + height)
+        point3 = (x + width, y + height)
         arr = [point1, point2, point3]
         return arr
     def mouthRight():
-        point1 = (x + 20, y + 20)
-        point2 = (x + 40, y + 40)
-        point3 = (x + 40, y)
+        point1 = (x + width/2, y + height/2)
+        point2 = (x + width, y + height)
+        point3 = (x + width, y)
         arr = [point1, point2, point3]
         return arr
     def mouthUp():
-        point1 = (x + 20, y + 20)
+        point1 = (x + width/2, y + height/2)
         point2 = (x, y)
-        point3 = (x + 40, y)
+        point3 = (x + width, y)
         arr = [point1, point2, point3]
         return arr
     def mouthLeft():
-        point1 = (x + 20, y + 20)
-        point2 = (x, y + 40)
+        point1 = (x + width/2, y + height/2)
+        point2 = (x, y + height)
         point3 = (x, y)
         arr = [point1, point2, point3]
         return arr
-    #if it reaches the boundaries of the screen stop and print game over
-    if x < 0 or y < 0 or x+40 == 500 or y+40 == 500:
+    # If it reaches the boundaries of the screen stop and print game over
+    if x < 0 or y < 0 or x+width == displayX or y+height == displayY:
         vel = 0
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font('freesansbold.ttf', 50)
         text = font.render('Game Over', True, (255, 0, 0))
-        window.blit(text, (0,0))
+        window.blit(text, (0, 0))
     pygame.display.update()
 
 pygame.quit()
