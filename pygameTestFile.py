@@ -9,14 +9,14 @@ pygame.display.set_caption("Continuous Movement Test")
 
 width = 40
 height = 40
-x = displayX/2 - width/2
-y = displayY/2 - height/2
+x = 2*width
+y = 2*height
 vel = 5
 key = 0
 pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
 run = True
-pastX = 0
-pastY = 0
+pastX = 2*width
+pastY = 2*height
 lifeColor = [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
 numDeaths = 0
 died = False
@@ -124,13 +124,13 @@ while run:
             print(str(lifeColor))
 
     if died: #if it has died return to center of screen
-        x = displayX / 2 - width / 2
-        y = displayY / 2 - height / 2
+        x = 2*width
+        y = 2*height
         died = False
     #if died more than 3 times -> game over
     if numDeaths >= 3:
         vel = 0
-        font = pygame.font.Font('freesansbold.ttf', 32)
+        font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('GAME OVER', True, (255, 0, 0))
         window.blit(text, (0, 0))
 
