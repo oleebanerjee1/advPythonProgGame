@@ -110,11 +110,13 @@ while run:
         x = displayX / 2 - width / 2
         y = displayY / 2 - height / 2
         died = False
-    def gameOver():
+    #if died more than 3 times -> game over
+    if numDeaths >= 3:
         vel = 0
-        font = pygame.font.Font('freesansbold.ttf', 50)
-        text = font.render('Game Over', True, (255, 0, 0))
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text = font.render('GAME OVER', True, (255, 0, 0))
         window.blit(text, (0, 0))
+
     pygame.display.update()
 
 pygame.quit()
