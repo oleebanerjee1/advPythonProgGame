@@ -34,9 +34,10 @@ W WWW W  W
 W     W  W
 WWWWWWWWEW
 """.splitlines()[1:]
-print(mazeLayout)
+# print(mazeLayout)
 
-block = pygame.image.load("C:\\Users\\olee1\\Pictures\\block.png").convert()
+# block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
+block = pygame.image.load('block.png')
 
 # Using blit to copy content from one surface to other
 window.blit(block, (0, 0))
@@ -45,14 +46,14 @@ for row in range(0, 10):
     for column in range(0, 10):
         if mazeLayout[row][column:column+1] == "W":
             walls.append([column*64, row*64])
-            print(walls)
+            # print(walls)
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
             print(exit)
 
 for i in range(0, len(walls)):
     window.blit(block, (walls[i][0], walls[i][1]))
-    print(walls[i][0], walls[i][1])
+    # print(walls[i][0], walls[i][1])
 
 # paint screen one time
 pygame.display.flip()
