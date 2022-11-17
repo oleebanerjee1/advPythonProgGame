@@ -11,7 +11,7 @@ width = 40
 height = 40
 x = 2*width
 y = 2*height
-vel = 5
+vel = 9
 key = 0
 pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
 run = True
@@ -119,21 +119,18 @@ while run:
         point3 = (x, y)
         arr = [point1, point2, point3]
         return arr
-
-    # If it reaches the boundaries of the screen set one circle to black
-    if (x<displayX and y<displayY and x > 512 and y > 576):
+    #if it reaches the end of maze stop moving and print you win
+    if (x <= displayX - 64 and y >= displayY - height and x > exit[0]):
         vel = 0
         font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('YOU WIN', True, (255, 0, 0))
         window.blit(text, (0, 0))
-    elif x < 0 or y < 0 or x + width == displayX or y + height == displayY:
+    #else if it reaches the boundaries of the screen set one circle to black
+    elif x < 0 or y < 0 or x + width >= displayX or y + height >= displayY:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
-            print("reached")
-            print("NumDeaths:", str(numDeaths - 1))
             lifeColor[numDeaths - 1] = (0, 0, 0)
-            print(str(lifeColor))
 
     if died: #if it has died return to center of screen
         x = 2*width
