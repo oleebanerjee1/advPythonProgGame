@@ -20,7 +20,8 @@ pastY = 2*height
 lifeColor = [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
 numDeaths = 0
 died = False
-
+#1 = right, 2 = down, 3 = left, 4 = up
+mouthDirection = 1
 walls = []
 mazeLayout = """
 WWWWWWWWWW
@@ -69,18 +70,23 @@ while run:
                 key = event.key
             #pygame.key.get_pressed()
 
+    #depending on the key hit the pacman's mouth switches and he moves that way
     if key == pygame.K_LEFT:
         x -= vel
         pointArr = mouthLeft()
+        mouthDirection = 3
     if key == pygame.K_RIGHT:
         x += vel
         pointArr = mouthRight()
+        mouthDirection = 1
     if key == pygame.K_UP:
         y -= vel
         pointArr = mouthUp()
+        mouthDirection = 4
     if key == pygame.K_DOWN:
         y += vel
         pointArr = mouthDown()
+        mouthDirection = 2
     pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height)) # past character turns black to user can't see
     pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
     pastX = x
@@ -113,8 +119,14 @@ while run:
         point3 = (x, y)
         arr = [point1, point2, point3]
         return arr
+
     # If it reaches the boundaries of the screen set one circle to black
-    if x < 0 or y < 0 or x + width == displayX or y + height == displayY:
+    if (x<displayX and y<displayY and x > 512 and y > 576):
+        vel = 0
+        font = pygame.font.Font('freesansbold.ttf', 40)
+        text = font.render('YOU WIN', True, (255, 0, 0))
+        window.blit(text, (0, 0))
+    elif x < 0 or y < 0 or x + width == displayX or y + height == displayY:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
@@ -127,6 +139,7 @@ while run:
         x = 2*width
         y = 2*height
         died = False
+
     #if died more than 3 times -> game over
     if numDeaths >= 3:
         vel = 0
