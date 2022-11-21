@@ -120,7 +120,7 @@ while run:
         arr = [point1, point2, point3]
         return arr
     #if it reaches the end of maze stop moving and print you win
-    if (x <= displayX - 64 and y >= displayY - height and x > exit[0]):
+    if (x <= displayX - (64+width) and y >= displayY - height and x > exit[0]):
         vel = 0
         font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('YOU WIN', True, (255, 0, 0))
