@@ -9,9 +9,9 @@ pygame.display.set_caption("Continuous Movement Test")
 
 width = 40
 height = 40
-x = 2*width
-y = 2*height
-vel = 9
+x = 72
+y = 72
+vel = 4
 key = 0
 pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
 run = True
@@ -93,7 +93,16 @@ while run:
     pastY = y
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
-
+    if y>=256-height and y <=320 and x>=64 and x<=192:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+    elif y>=320-height and y<=384 and x>= 128- width and x<=192:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
     # Printing the mouth in different directions
     def mouthDown():
         point1 = (x + width/2, y + height/2)
@@ -132,9 +141,9 @@ while run:
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    if died: #if it has died return to center of screen
-        x = 2*width
-        y = 2*height
+    if died: #if it has died return to left corner of screen
+        x = 72
+        y = 72
         key = pygame.K_RIGHT
         died = False
 
