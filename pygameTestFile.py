@@ -125,8 +125,8 @@ while run:
         font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('YOU WIN', True, (255, 0, 0))
         window.blit(text, (0, 0))
-    #else if it reaches the boundaries of the screen set one circle to black
-    elif x < 0 or y < 0 or x + width >= displayX or y + height >= displayY:
+    #else if it reaches the boundaries of the screen set one circle to black and add to numdeaths
+    elif x < 64 or y < 64 or x + width >= displayX-64 or y + height >= displayY-64 and (x < exit[0] or x > displayX - (64+width)):
         numDeaths += 1
         died = True
         if numDeaths <= 3:
@@ -135,6 +135,7 @@ while run:
     if died: #if it has died return to center of screen
         x = 2*width
         y = 2*height
+        key = pygame.K_RIGHT
         died = False
 
     #if died more than 3 times -> game over
