@@ -103,6 +103,31 @@ while run:
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    elif 128 <= (x + width) and x <= 320 and 448 <= (y + height) and y <= 512:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    elif 256 <= (x + width) and x <= 320 and 256 <= (y + height) and y <= 512:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    elif 320 <= (x + width) <= 576 and 256 <= (y + height) <= 320:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    elif 448 < (x + width) and x < 512 and 128 < (y + height) and y < 384:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
     # Printing the mouth in different directions
     def mouthDown():
         point1 = (x + width/2, y + height/2)
