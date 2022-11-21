@@ -122,19 +122,31 @@ while run:
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 448 < (x + width) and x < 512 and 128 < (y + height) and y < 384:
+    elif 448 <= (x + width) and x <= 512 and 128 <= (y + height) and y <= 384:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 256 < (x + width) and 256 < (y + height) < 320:
+    elif 256 <= (x + width) and 256 <= (y + height) <= 320:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 384 < (x + width) < 448 and 448 < (y + height):
+    elif 384 <= (x + width) <= 448 and 448 <= (y + height):
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    elif 4*64 <= (x + width) <= 5*64 and 64 <= (y + height) <= 2*64:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    elif 2*64 <= (x + width) <= 7*64 and 2*64 <= (y + height) <= 3*64:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
