@@ -35,7 +35,10 @@ W WWW W  W
 W     W  W
 WWWWWWWWEW
 """.splitlines()[1:]
-# print(mazeLayout)
+obstacle = pygame.draw.ellipse(window, (80, 200, 120), (7 * 64, 8 * 64, 20, 20))
+obstacleX = 7 * 64
+obstacleY = 8 * 64
+obstacleVelocity = 3
 
 # block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
 block = pygame.image.load('block.png')
@@ -93,21 +96,6 @@ while run:
     pastY = y
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
-
-    if mouthDirection == 1:
-        aheadX = x+width
-        aheadY = y
-    elif mouthDirection == 2:
-        aheadX = x
-        aheadY = y+height
-    elif mouthDirection == 3:
-        aheadX = x-width
-        aheadY = y
-    else:
-        aheadX = x
-        aheadY = y-height
-    print(mouthDirection)
-
     if y>=256-height and y <=320 and x>=64 and x<=192:
         numDeaths += 1
         died = True
@@ -119,49 +107,66 @@ while run:
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 128 <= aheadX and x <= 320 and 448 <= aheadY and y <= 512:
+    elif 128 <= (x + width) and x <= 320 and 448 <= (y + height) and y <= 512:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 256 <= aheadX and x <= 320 and 256 <= aheadY and y <= 512:
+    elif 256 <= (x + width) and x <= 320 and 256 <= (y + height) and y <= 512:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 320 <= aheadX <= 576 and 256 <= aheadY <= 320:
+    elif 320 <= (x + width) <= 576 and 256 <= (y + height) <= 320:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 448 <= aheadX and x <= 512 and 128 <= aheadY and y <= 384:
+    elif 448 <= (x + width) and x <= 512 and 128 <= (y + height) and y <= 384:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 256 <= aheadX and 256 <= aheadY <= 320:
+    elif 256 <= (x + width) and 256 <= (y + height) <= 320:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 384 <= aheadX <= 448 and 448 <= aheadY:
+    elif 384 <= (x + width) <= 448 and 448 <= (y + height):
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 4*64 <= aheadX <= 5*64 and 64 <= aheadY <= 2*64:
+    elif 4*64 <= (x + width) <= 5*64 and 64 <= (y + height) <= 2*64:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+    elif x +width > 128 and x<448 and y < 192 and y+ height>128:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    elif 2*64 <= aheadX <= 7*64 and 2*64 <= aheadY <= 3*64:
+    # adding obstacle
+    # if the obstacle hits the edge, its velocity becomes negative
+    if obstacleX >= 9*64-20:
+        obstacleVelocity = -3
+    elif obstacleX <= 7*64:
+        obstacleVelocity = 3
+
+    obstacleX += obstacleVelocity
+    pygame.draw.ellipse(window, (0, 0, 0), (obstacleX-obstacleVelocity, obstacleY, 20, 20)) # past character turns black to user can't see
+    pygame.draw.ellipse(window, (80, 200, 120), (obstacleX, obstacleY, 20, 20))
+
+    # if pacman hits the obstacle, he loses a life and moves back to the start
+    if x <= obstacleX+10 <= x+width and y <= obstacleY+10 <= y+height:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
@@ -221,4 +226,3 @@ while run:
     pygame.display.update()
 
 pygame.quit()
-

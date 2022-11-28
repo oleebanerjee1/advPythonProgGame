@@ -35,7 +35,10 @@ W WWW W  W
 W     W  W
 WWWWWWWWEW
 """.splitlines()[1:]
-# print(mazeLayout)
+obstacle = pygame.draw.ellipse(window, (80, 200, 120), (7 * 64, 8 * 64, 20, 20))
+obstacleX = 7 * 64
+obstacleY = 8 * 64
+obstacleVelocity = 3
 
 # block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
 block = pygame.image.load('block.png')
@@ -157,6 +160,25 @@ while run:
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
     elif x +width > 128 and x<448 and y < 192 and y+ height>128:
+        numDeaths += 1
+        died = True
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
+
+    # adding obstacle
+    # if the obstacle hits the edge, its velocity becomes negative
+    if obstacleX >= 9 * 64 - 20:
+        obstacleVelocity = -3
+    elif obstacleX <= 7 * 64:
+        obstacleVelocity = 3
+
+    obstacleX += obstacleVelocity
+    pygame.draw.ellipse(window, (0, 0, 0), (
+    obstacleX - obstacleVelocity, obstacleY, 20, 20))  # past character turns black to user can't see
+    pygame.draw.ellipse(window, (80, 200, 120), (obstacleX, obstacleY, 20, 20))
+
+    # if pacman hits the obstacle, he loses a life and moves back to the start
+    if x <= obstacleX + 10 <= x + width and y <= obstacleY + 10 <= y + height:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
