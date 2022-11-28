@@ -145,8 +145,7 @@ while run:
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
-    elif 2*64 <= (x + width) <= 7*64 and 2*64 <= (y + height) <= 3*64:
+    elif x +width > 128 and x<448 and y < 192 and y+ height>128:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
