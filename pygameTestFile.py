@@ -93,6 +93,17 @@ while run:
     pastY = y
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
+
+    # for the live that you can eat
+    if x + width >= 407 and y + height >= 215:
+        if numDeaths == 0:
+            died = True
+        else:
+            numDeaths = numDeaths - 1
+            lifeColor[numDeaths] = (255, 0, 0)
+            died = True
+
+
     if y>=256-height and y <=320 and x>=64 and x<=192:
         numDeaths += 1
         died = True
@@ -201,6 +212,12 @@ while run:
         font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('GAME OVER', True, (255, 0, 0))
         window.blit(text, (0, 0))
+
+    pygame.draw.ellipse(window, (255,0,0), (407, 215, 20, 20))
+
+
+
+
 
     pygame.display.update()
 
