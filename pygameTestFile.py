@@ -15,21 +15,23 @@ while (end_it == False):
     myfont = pygame.font.SysFont("Britannic Bold", 40)
     welcome = myfont.render("Welcome!", 1, (255, 0, 0))
     start = myfont.render("Start", 1, (0, 0, 0))
+    quit = myfont.render("Quit", 1, (0, 0, 0))
     instruct = myfont.render("Use the arrow keys to control the Pacman", 1, (255, 0, 0))
     for event in pygame.event.get():
         rect1 = (255, 0, 0)
         rect2 = (255, 0, 0)
         if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
-            rect1 = (0, 0, 255)
+            rect1 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 end_it = True
         elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
-            rect2 = (0, 0, 255)
+            rect2 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.quit()
     window.blit(welcome, (250, 50))
     window.blit(instruct, (50, 100))
-    window.blit(start, (240, 180))
+    window.blit(start, (290, 210))
+    window.blit(quit, (290, 310))
     pygame.display.flip()
 window.fill([0, 0, 0])
 width = 40
