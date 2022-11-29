@@ -14,6 +14,7 @@ while (end_it == False):
     pygame.draw.rect(window, rect2, (240, 280, 160, 80))
     myfont = pygame.font.SysFont("Britannic Bold", 40)
     welcome = myfont.render("Welcome!", 1, (255, 0, 0))
+    start = myfont.render("Start", 1, (0, 0, 0))
     instruct = myfont.render("Use the arrow keys to control the Pacman", 1, (255, 0, 0))
     for event in pygame.event.get():
         rect1 = (255, 0, 0)
@@ -28,6 +29,7 @@ while (end_it == False):
                 pygame.quit()
     window.blit(welcome, (250, 50))
     window.blit(instruct, (50, 100))
+    window.blit(start, (240, 180))
     pygame.display.flip()
 window.fill([0, 0, 0])
 width = 40
