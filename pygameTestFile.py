@@ -75,7 +75,7 @@ obstacleY = 8 * 64
 obstacleVelocity = 3
 
 # block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
-block = pygame.image.load('block.png')
+block = pygame.image.load('block1.png')
 
 # Using blit to copy content from one surface to other
 window.blit(block, (0, 0))
