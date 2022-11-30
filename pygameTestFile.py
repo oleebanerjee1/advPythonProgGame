@@ -95,7 +95,8 @@ for i in range(0, len(walls)):
 # paint screen one time
 pygame.display.flip()
 
-
+pygame.draw.ellipse(window, (255, 0, 0), (407, 215, 20, 20)) #extra  life
+lifeEaten = False
 
 while run:
     pygame.time.delay(100)
@@ -131,15 +132,19 @@ while run:
     pastY = y
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
-
     # for the life that you can eat
-    if x + width >= 407 and y + height >= 215:
-        if numDeaths == 0:
-            died = True
-        else:
-            numDeaths = numDeaths - 1
-            lifeColor[numDeaths] = (255, 0, 0)
-            died = True
+
+    if lifeEaten == False:
+        if 407 + 64 >= x + width >= 407 and 215 + 64 >= y + height >= 215:
+            if numDeaths == 0:
+                died = True
+                print("died")
+            else:
+                numDeaths = numDeaths - 1
+                lifeColor[numDeaths] = (255, 0, 0)
+                died = True
+            lifeEaten = True
+            pygame.draw.ellipse(window, (0, 0, 0), (407, 215, 20, 20))
 
 
     if y>=256-height and y <=320 and x>=64 and x<=192:
@@ -276,7 +281,6 @@ while run:
         text = font.render('GAME OVER', True, (255, 0, 0))
         window.blit(text, (0, 0))
 
-    pygame.draw.ellipse(window, (255, 0, 0), (407, 215, 20, 20)) #extra  life
 
     pygame.display.update()
 
