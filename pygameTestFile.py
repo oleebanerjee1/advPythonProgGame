@@ -13,10 +13,13 @@ while (end_it == False):
     pygame.draw.rect(window, rect1, (240, 180, 160, 80))
     pygame.draw.rect(window, rect2, (240, 280, 160, 80))
     myfont = pygame.font.SysFont("Britannic Bold", 40)
+    smallfont = pygame.font.SysFont("Britannic Bold", 35)
     welcome = myfont.render("Welcome!", 1, (255, 0, 0))
     start = myfont.render("Start", 1, (0, 0, 0))
     quit = myfont.render("Quit", 1, (0, 0, 0))
     instruct = myfont.render("Use the arrow keys to control the Pacman", 1, (255, 0, 0))
+    extraLife = smallfont.render("Eating this allows you to gain another life:", 1, (255, 0, 0))
+    obstacle = smallfont.render("Hitting this obstacle kills you:", 1, (255, 0, 0))
     for event in pygame.event.get():
         rect1 = (255, 0, 0)
         rect2 = (255, 0, 0)
@@ -32,6 +35,10 @@ while (end_it == False):
     window.blit(instruct, (50, 100))
     window.blit(start, (290, 210))
     window.blit(quit, (290, 310))
+    window.blit(obstacle, (10, 500))
+    pygame.draw.ellipse(window, (80, 200, 120), (390, 503, 20, 20))
+    window.blit(extraLife, (10, 400))
+    pygame.draw.ellipse(window, (255, 0, 0), (540, 403, 20, 20))
     pygame.display.flip()
 window.fill([0, 0, 0])
 width = 40
@@ -126,7 +133,7 @@ while run:
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
 
-    # for the live that you can eat
+    # for the life that you can eat
     if x + width >= 407 and y + height >= 215:
         if numDeaths == 0:
             died = True
@@ -264,11 +271,7 @@ while run:
         text = font.render('GAME OVER', True, (255, 0, 0))
         window.blit(text, (0, 0))
 
-    pygame.draw.ellipse(window, (255,0,0), (407, 215, 20, 20))
-
-
-
-
+    pygame.draw.ellipse(window, (255, 0, 0), (407, 215, 20, 20)) #extra  life
 
     pygame.display.update()
 
