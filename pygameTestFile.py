@@ -86,7 +86,7 @@ for row in range(0, 10):
             # print(walls)
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
-            print(exit)
+            # print(exit)
 
 for i in range(0, len(walls)):
     window.blit(block, (walls[i][0], walls[i][1]))
@@ -108,6 +108,9 @@ while run:
                     (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
                 key = event.key
             #pygame.key.get_pressed()
+
+    for i in range(0, len(walls)):
+        window.blit(block, (walls[i][0], walls[i][1]))
 
     #depending on the key hit the pacman's mouth switches and he moves that way
     if key == pygame.K_LEFT:
@@ -145,6 +148,12 @@ while run:
                 died = True
             lifeEaten = True
             pygame.draw.ellipse(window, (0, 0, 0), (407, 215, 20, 20))
+
+
+    # for the lightning bolt
+    if 64 <= (x+width) <= 64*2 and 64*5 <= (y+height) <= 64*6:
+        vel = vel+2
+        print("reached")
 
 
     if y>=256-height and y <=320 and x>=64 and x<=192:
