@@ -152,8 +152,8 @@ while run:
 
     # for the lightning bolt
     if 64 <= (x+width) <= 64*2 and 64*5 <= (y+height) <= 64*6:
-        vel = vel+2
-        print("reached")
+        vel = vel*2
+        pygame.draw.rect(window, (0, 0, 0), (64, 64*5, 64, 64))
 
 
     if y>=256-height and y <=320 and x>=64 and x<=192:
