@@ -76,9 +76,8 @@ obstacleVelocity = 3
 
 # block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
 block = pygame.image.load('block1.png')
-
-# Using blit to copy content from one surface to other
-window.blit(block, (0, 0))
+lightningBolt = pygame.image.load('lightningBolt.png')
+window.blit(lightningBolt, (64, 5*64))
 
 for row in range(0, 10):
     for column in range(0, 10):
