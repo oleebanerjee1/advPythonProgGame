@@ -96,6 +96,17 @@ while run:
     pastY = y
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
+
+    # for the live that you can eat
+    if 407+64 >= x + width >= 407 and 215+64 >= y + height >= 215:
+        if numDeaths == 0:
+            died = True
+        else:
+            numDeaths = numDeaths - 1
+            lifeColor[numDeaths] = (255, 0, 0)
+            died = True
+
+
     if y>=256-height and y <=320 and x>=64 and x<=192:
         numDeaths += 1
         died = True
@@ -130,6 +141,10 @@ while run:
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
+    # elif 64*6 <= (x+width) and x <= 512 and 64*7 <= y+height:
+        # numDeaths += 1
+        # died = True
+        # if numDeaths <= 3:
 
     elif 256 <= (x + width) and 256 <= (y + height) <= 320:
         numDeaths += 1
@@ -148,7 +163,7 @@ while run:
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-    elif x +width > 128 and x<448 and y < 192 and y+ height>128:
+    elif (x +width) > 128 and x<448 and y < 192 and (y+ height)>128:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
@@ -156,17 +171,18 @@ while run:
 
     # adding obstacle
     # if the obstacle hits the edge, its velocity becomes negative
-    if obstacleX >= 9*64-20:
+    if obstacleX >= 9 * 64 - 20:
         obstacleVelocity = -3
-    elif obstacleX <= 7*64:
+    elif obstacleX <= 7 * 64:
         obstacleVelocity = 3
 
     obstacleX += obstacleVelocity
-    pygame.draw.ellipse(window, (0, 0, 0), (obstacleX-obstacleVelocity, obstacleY, 20, 20)) # past character turns black to user can't see
+    pygame.draw.ellipse(window, (0, 0, 0), (
+    obstacleX - obstacleVelocity, obstacleY, 20, 20))  # past character turns black to user can't see
     pygame.draw.ellipse(window, (80, 200, 120), (obstacleX, obstacleY, 20, 20))
 
     # if pacman hits the obstacle, he loses a life and moves back to the start
-    if x <= obstacleX+10 <= x+width and y <= obstacleY+10 <= y+height:
+    if x <= obstacleX + 10 <= x + width and y <= obstacleY + 10 <= y + height:
         numDeaths += 1
         died = True
         if numDeaths <= 3:
@@ -222,6 +238,12 @@ while run:
         font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('GAME OVER', True, (255, 0, 0))
         window.blit(text, (0, 0))
+
+    pygame.draw.ellipse(window, (255,0,0), (407, 215, 20, 20))
+
+
+
+
 
     pygame.display.update()
 
