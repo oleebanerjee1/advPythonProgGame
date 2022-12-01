@@ -11,6 +11,8 @@ end_it = False
 rect1 = (255, 0, 0)
 rect2 = (255, 0, 0)
 while (end_it == False):
+
+
     pygame.draw.rect(window, rect1, (240, 180, 160, 80))
     pygame.draw.rect(window, rect2, (240, 280, 160, 80))
     myfont = pygame.font.SysFont("Britannic Bold", 40)
@@ -315,7 +317,7 @@ while won:
             rect2 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.quit()
-    window.blit(win, (120, 100))
+    window.blit(win, (150, 100))
     window.blit(quit, (290, 310))
     pygame.display.flip()
 while gameOver:
