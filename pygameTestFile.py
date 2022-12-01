@@ -1,4 +1,5 @@
 import pygame
+import time
 pygame.init()
 
 displayX = 640
@@ -17,6 +18,7 @@ while (end_it == False):
     welcome = myfont.render("Welcome!", 1, (255, 0, 0))
     start = myfont.render("Start", 1, (0, 0, 0))
     quit = myfont.render("Quit", 1, (0, 0, 0))
+    noWalls = myfont.render("Hitting the walls will kill you.", 1, (255, 0, 0))
     instruct = myfont.render("Use the arrow keys to control the Pacman", 1, (255, 0, 0))
     extraLife = smallfont.render("Eating this allows you to gain another life:", 1, (255, 0, 0))
     obstacle = smallfont.render("Hitting this obstacle kills you:", 1, (255, 0, 0))
@@ -33,6 +35,7 @@ while (end_it == False):
                 pygame.quit()
     window.blit(welcome, (250, 50))
     window.blit(instruct, (50, 100))
+    window.blit(noWalls, (120, 140))
     window.blit(start, (290, 210))
     window.blit(quit, (290, 310))
     window.blit(obstacle, (10, 500))
@@ -54,6 +57,8 @@ pastY = 2*height
 lifeColor = [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
 numDeaths = 0
 died = False
+gameOver = True
+won = False
 #1 = right, 2 = down, 3 = left, 4 = up
 mouthDirection = 1
 walls = []
@@ -140,19 +145,17 @@ while run:
     if lifeEaten == False:
         if 407 + 64 >= x + width >= 407 and 215 + 64 >= y + height >= 215:
             if numDeaths == 0:
-                died = True
                 print("died")
             else:
                 numDeaths = numDeaths - 1
                 lifeColor[numDeaths] = (255, 0, 0)
-                died = True
             lifeEaten = True
             pygame.draw.ellipse(window, (0, 0, 0), (407, 215, 20, 20))
 
 
     # for the lightning bolt
     if 64 <= (x+width) <= 64*2 and 64*5 <= (y+height) <= 64*6:
-        vel = vel*2
+        vel = vel*1.25
         pygame.draw.rect(window, (0, 0, 0), (64, 64*5, 64, 64))
 
 
@@ -286,11 +289,58 @@ while run:
     #if died more than 3 times -> game over
     if numDeaths >= 3:
         vel = 0
-        font = pygame.font.Font('freesansbold.ttf', 40)
-        text = font.render('GAME OVER', True, (255, 0, 0))
-        window.blit(text, (0, 0))
-
-
+        run = False
     pygame.display.update()
+    if (x <= displayX - (64+width) and y >= displayY - height and x > exit[0]):
+        run = False
+        gameOver = False
+        won = True
+window.fill([0, 0, 0])
+rect2 = ([255, 0, 0])
+while won:
+    pygame.draw.rect(window, rect2, (240, 280, 160, 80))
+    myfont = pygame.font.SysFont("Britannic Bold", 100)
+    smallfont = pygame.font.SysFont("Britannic Bold", 40)
+    win = myfont.render("YOU WIN!", 1, (255, 0, 0))
+    quit = smallfont.render("Quit", 1, (0, 0, 0))
+    for event in pygame.event.get():
+        rect2 = (255, 0, 0)
+        if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
+            rect1 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                end_it = True
+        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
+            rect2 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.quit()
+    window.blit(win, (120, 100))
+    window.blit(quit, (290, 310))
+    pygame.display.flip()
+while gameOver:
+    pygame.draw.rect(window, rect2, (240, 280, 160, 80))
+    myfont = pygame.font.SysFont("Britannic Bold", 100)
+    smallfont = pygame.font.SysFont("Britannic Bold", 40)
+    over = myfont.render("GAMEOVER!", 1, (255, 0, 0))
+    quit = smallfont.render("Quit", 1, (0, 0, 0))
+    for event in pygame.event.get():
+        rect2 = (255, 0, 0)
+        if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
+            rect1 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                end_it = True
+        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
+            rect2 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.quit()
+    window.blit(over, (120, 100))
+    window.blit(quit, (290, 310))
+    pygame.display.flip()
+
+pygame.display.flip()
 
 pygame.quit()
+
