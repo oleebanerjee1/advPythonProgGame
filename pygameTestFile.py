@@ -2,17 +2,16 @@ import pygame
 import time
 pygame.init()
 
+#create a display screen to print on
 displayX = 640
 displayY = 640
 window = pygame.display.set_mode((displayX, displayY))
-pygame.display.set_caption("ripoff pac-man")
+pygame.display.set_caption("Continuous Movement Test")
 #show instruction screen until user clicks out
 end_it = False
 rect1 = (255, 0, 0)
 rect2 = (255, 0, 0)
 while (end_it == False):
-
-
     pygame.draw.rect(window, rect1, (240, 180, 160, 80))
     pygame.draw.rect(window, rect2, (240, 280, 160, 80))
     myfont = pygame.font.SysFont("Britannic Bold", 40)
@@ -24,6 +23,9 @@ while (end_it == False):
     instruct = myfont.render("Use the arrow keys to control the Pacman", 1, (255, 0, 0))
     extraLife = smallfont.render("Eating this allows you to gain another life:", 1, (255, 0, 0))
     obstacle = smallfont.render("Hitting this obstacle kills you:", 1, (255, 0, 0))
+    speedInstruct = smallfont.render("Eating this bolt increases speed:", 1, (255, 0, 0))
+    #if the mouse hovers over the button, it turns green
+    #if the mouse clicks the "start" button stop this loop, if the mouse clicks "quit" the program ends
     for event in pygame.event.get():
         rect1 = (255, 0, 0)
         rect2 = (255, 0, 0)
@@ -40,10 +42,14 @@ while (end_it == False):
     window.blit(noWalls, (120, 140))
     window.blit(start, (290, 210))
     window.blit(quit, (290, 310))
-    window.blit(obstacle, (10, 500))
-    pygame.draw.ellipse(window, (80, 200, 120), (390, 503, 20, 20))
+    window.blit(obstacle, (10, 480))
+    pygame.draw.ellipse(window, (80, 200, 120), (390, 483, 20, 20))
     window.blit(extraLife, (10, 400))
     pygame.draw.ellipse(window, (255, 0, 0), (540, 403, 20, 20))
+    window.blit(speedInstruct, (10, 560))
+    block = pygame.image.load('block1.png')
+    lightningBolt = pygame.image.load('lightningBolt.png')
+    window.blit(lightningBolt, (410, 540))
     pygame.display.flip()
 window.fill([0, 0, 0])
 width = 40
@@ -85,7 +91,6 @@ obstacleVelocity = 3
 block = pygame.image.load('block1.png')
 lightningBolt = pygame.image.load('lightningBolt.png')
 window.blit(lightningBolt, (64, 5*64))
-boltReached = False
 
 for row in range(0, 10):
     for column in range(0, 10):
@@ -137,10 +142,8 @@ while run:
         y += vel
         pointArr = mouthDown()
         mouthDirection = 2
-    if boltReached:
-        pygame.draw.rect(window, (0, 0, 0), (64, 64 * 5, 64, 64))
-    pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height)) # past character turns black to user can't see
-    pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
+    pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height)) #the past character turns black to user can't see
+    pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height)) #draws the pacman yellow circle
     pastX = x
     pastY = y
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
@@ -159,9 +162,9 @@ while run:
 
 
     # for the lightning bolt
-    if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
-        vel = vel*1.5
-        boltReached = True
+    if 64 <= (x+width) <= 64*2 and 64*5 <= (y+height) <= 64*6:
+        vel = vel*1.25
+        pygame.draw.rect(window, (0, 0, 0), (64, 64*5, 64, 64))
 
 
     if y>=256-height and y <=320 and x>=64 and x<=192:
