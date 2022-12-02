@@ -91,13 +91,16 @@ lightningBolt = pygame.image.load('lightningBolt.png')
 window.blit(lightningBolt, (64, 5*64))
 boltReached = False
 
+# iterates through the string representation of each cell
 for row in range(0, 10):
     for column in range(0, 10):
+        # if the character is "W", meaning Wall, the cell's coords get added to the list of walls
         if mazeLayout[row][column:column+1] == "W":
             walls.append([column*64, row*64])
+        # if the character is "E", meaning Exit, the cell's coords are saved as the exit
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
-
+# for every coord pair in walls, display a block there
 for i in range(0, len(walls)):
     window.blit(block, (walls[i][0], walls[i][1]))
 
@@ -116,7 +119,7 @@ while run:
             if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or \
                     (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
                 key = event.key
-
+    # reprint the wall blocks because pacman was eating into them
     for i in range(0, len(walls)):
         window.blit(block, (walls[i][0], walls[i][1]))
 
@@ -137,6 +140,8 @@ while run:
         y += vel
         pointArr = mouthDown()
         mouthDirection = 2
+    # if pacman already reached the bolt, the cell gets filled black
+    # we needed this here because pacman would get hidden under the black square if he re-entered the cell
     if boltReached:
         pygame.draw.rect(window, (0, 0, 0), (64, 64 * 5, 64, 64))
     # the past character turns black to user can't see
@@ -164,11 +169,11 @@ while run:
             pygame.draw.ellipse(window, (0, 0, 0), (407, 215, 20, 20))
 
 
-    # for the lightning bolt
+    # for the lightning bolt: if pacman enters the cell with the lightning bolt, he speeds up
     if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
-        vel = vel*1.75
+        vel = vel*2
         boltReached = True
-    # this method increases the numDeaths by one and sets the corresponding life eclipse to black
+    # this method increases the numDeaths by one and sets the corresponding life ellipse to black
     def hasDied(numDeaths):
         numDeaths += 1
         if numDeaths <= 3:
