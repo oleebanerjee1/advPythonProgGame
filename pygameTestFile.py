@@ -67,7 +67,6 @@ numDeaths = 0
 died = False
 gameOver = True
 won = False
-#1 = right, 2 = down, 3 = left, 4 = up
 mouthDirection = 1
 walls = []
 mazeLayout = """
@@ -121,7 +120,6 @@ while run:
             if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or \
                     (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
                 key = event.key
-            #pygame.key.get_pressed()
 
     for i in range(0, len(walls)):
         window.blit(block, (walls[i][0], walls[i][1]))
@@ -145,14 +143,19 @@ while run:
         mouthDirection = 2
     if boltReached:
         pygame.draw.rect(window, (0, 0, 0), (64, 64 * 5, 64, 64))
-    pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height)) #the past character turns black to user can't see
-    pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height)) #draws the pacman yellow circle
+    # the past character turns black to user can't see
+    pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height))
+    # draws the pacman yellow circle
+    pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
+    # updates past coordinate values
     pastX = x
     pastY = y
+    # draws the mouth
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
+    # draws the lives
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
-    # for the life that you can eat
 
+    # if the extra life is uneaten, check is the pacman coordinates equal the life coordinates. If true if the numDeathes is greater than 0 add a life
     if lifeEaten == False:
         if 407 + 64 >= x + width >= 407 and 215 + 64 >= y + height >= 215:
             if numDeaths == 0:
@@ -160,6 +163,7 @@ while run:
             else:
                 numDeaths = numDeaths - 1
                 lifeColor[numDeaths] = (255, 0, 0)
+            # set that is has been eaten and turn it black
             lifeEaten = True
             pygame.draw.ellipse(window, (0, 0, 0), (407, 215, 20, 20))
 
@@ -234,8 +238,7 @@ while run:
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    # adding obstacle
-    # if the obstacle hits the edge, its velocity becomes negative
+    # if the obstacle hits the edge, it moves in the opposite direction
     if obstacleX >= 9 * 64 - 20:
         obstacleVelocity = -3
     elif obstacleX <= 7 * 64:
