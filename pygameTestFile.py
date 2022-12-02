@@ -6,7 +6,7 @@ pygame.init()
 displayX = 640
 displayY = 640
 window = pygame.display.set_mode((displayX, displayY))
-pygame.display.set_caption("Continuous Movement Test")
+pygame.display.set_caption("ripoff pac-man")
 #show instruction screen until user clicks out
 end_it = False
 rect1 = (255, 0, 0)
@@ -91,6 +91,7 @@ obstacleVelocity = 3
 block = pygame.image.load('block1.png')
 lightningBolt = pygame.image.load('lightningBolt.png')
 window.blit(lightningBolt, (64, 5*64))
+boltReached = False
 
 for row in range(0, 10):
     for column in range(0, 10):
@@ -142,6 +143,8 @@ while run:
         y += vel
         pointArr = mouthDown()
         mouthDirection = 2
+    if boltReached:
+        pygame.draw.rect(window, (0, 0, 0), (64, 64 * 5, 64, 64))
     pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height)) #the past character turns black to user can't see
     pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height)) #draws the pacman yellow circle
     pastX = x
@@ -162,9 +165,9 @@ while run:
 
 
     # for the lightning bolt
-    if 64 <= (x+width) <= 64*2 and 64*5 <= (y+height) <= 64*6:
-        vel = vel*1.25
-        pygame.draw.rect(window, (0, 0, 0), (64, 64*5, 64, 64))
+    if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
+        vel = vel*1.75
+        boltReached = True
 
 
     if y>=256-height and y <=320 and x>=64 and x<=192:
