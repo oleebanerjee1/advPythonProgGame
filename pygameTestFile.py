@@ -51,24 +51,43 @@ while (end_it == False):
     lightningBolt = pygame.image.load('lightningBolt.png')
     window.blit(lightningBolt, (410, 540))
     pygame.display.flip()
+#making screen black and initializing variables for pacman size and starting position
 window.fill([0, 0, 0])
 width = 40
 height = 40
 x = 72
 y = 72
+#initializing velocity and key
 vel = 4
 key = 0
+#creating an array for the different points of the triangle that makes up the mouth
 pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
-run = True
+#these varibles allow us to keep track of where the pacman just was so we can turn that area black
 pastX = 2*width
 pastY = 2*height
+#this array contols the colors of the lives so that we can turn it black when you die
 lifeColor = [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
+#this variable represents the number of times the player has died
 numDeaths = 0
+#this boolean represents if the player has died
 died = False
+#these booleans control whether or not the corresponding screens will pop up
 gameOver = True
 won = False
-#1 = right, 2 = down, 3 = left, 4 = up
-mouthDirection = 1
+run = True
+
+#this section prints our obtacle and sets the coordinates and velocity
+obstacle = pygame.draw.ellipse(window, (80, 200, 120), (7 * 64, 8 * 64, 20, 20))
+obstacleX = 7 * 64
+obstacleY = 8 * 64
+obstacleVelocity = 3
+
+#this section prints our lighting bolt
+block = pygame.image.load('block1.png')
+lightningBolt = pygame.image.load('lightningBolt.png')
+window.blit(lightningBolt, (64, 5*64))
+
+#this section prints our maze
 walls = []
 mazeLayout = """
 WWWWWWWWWW
@@ -82,32 +101,20 @@ W WWW W  W
 W     W  W
 WWWWWWWWEW
 """.splitlines()[1:]
-obstacle = pygame.draw.ellipse(window, (80, 200, 120), (7 * 64, 8 * 64, 20, 20))
-obstacleX = 7 * 64
-obstacleY = 8 * 64
-obstacleVelocity = 3
-
-# block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
-block = pygame.image.load('block1.png')
-lightningBolt = pygame.image.load('lightningBolt.png')
-window.blit(lightningBolt, (64, 5*64))
 
 for row in range(0, 10):
     for column in range(0, 10):
         if mazeLayout[row][column:column+1] == "W":
             walls.append([column*64, row*64])
-            # print(walls)
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
-            # print(exit)
-
 for i in range(0, len(walls)):
     window.blit(block, (walls[i][0], walls[i][1]))
-    # print(walls[i][0], walls[i][1])
 
 # paint screen one time
 pygame.display.flip()
 
+#this section prints our extra life and declares the varible representing if it has been eaten
 pygame.draw.ellipse(window, (255, 0, 0), (407, 215, 20, 20)) #extra  life
 lifeEaten = False
 
