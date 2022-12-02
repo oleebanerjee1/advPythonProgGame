@@ -91,6 +91,7 @@ obstacleVelocity = 3
 block = pygame.image.load('block1.png')
 lightningBolt = pygame.image.load('lightningBolt.png')
 window.blit(lightningBolt, (64, 5*64))
+boltReached = False
 
 for row in range(0, 10):
     for column in range(0, 10):
@@ -142,6 +143,8 @@ while run:
         y += vel
         pointArr = mouthDown()
         mouthDirection = 2
+    if boltReached:
+        pygame.draw.rect(window, (0, 0, 0), (64, 64 * 5, 64, 64))
     pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height)) #the past character turns black to user can't see
     pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height)) #draws the pacman yellow circle
     pastX = x
@@ -162,8 +165,9 @@ while run:
 
 
     # for the lightning bolt
-    if 64 <= (x+width) <= 64*2 and 64*5 <= (y+height) <= 64*6:
+    if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
         vel = vel*1.25
+        boltReached = True
         pygame.draw.rect(window, (0, 0, 0), (64, 64*5, 64, 64))
 
 
