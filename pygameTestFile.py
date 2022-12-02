@@ -86,7 +86,6 @@ obstacleX = 7 * 64
 obstacleY = 8 * 64
 obstacleVelocity = 3
 
-# block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
 block = pygame.image.load('block1.png')
 lightningBolt = pygame.image.load('lightningBolt.png')
 window.blit(lightningBolt, (64, 5*64))
@@ -96,14 +95,11 @@ for row in range(0, 10):
     for column in range(0, 10):
         if mazeLayout[row][column:column+1] == "W":
             walls.append([column*64, row*64])
-            # print(walls)
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
-            # print(exit)
 
 for i in range(0, len(walls)):
     window.blit(block, (walls[i][0], walls[i][1]))
-    # print(walls[i][0], walls[i][1])
 
 # paint screen one time
 pygame.display.flip()
@@ -155,7 +151,7 @@ while run:
     # draws the lives
     lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
 
-    # if the extra life is uneaten, check is the pacman coordinates equal the life coordinates. If true if the numDeathes is greater than 0 add a life
+    # if the extra life is uneaten, check if the pacman coordinates equal the life coordinates. If true if the numDeathes is greater than 0 add a life
     if lifeEaten == False:
         if 407 + 64 >= x + width >= 407 and 215 + 64 >= y + height >= 215:
             if numDeaths == 0:
@@ -172,72 +168,46 @@ while run:
     if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
         vel = vel*1.75
         boltReached = True
+    # this method increases the numDeaths by one and sets the corresponding life eclipse to black
+    def hasDied(numDeaths):
+        numDeaths += 1
+        if numDeaths <= 3:
+            lifeColor[numDeaths - 1] = (0, 0, 0)
 
-
+    #the following if/elif statements check it the pacman's coordinates equal that of the maze and if so the pacman dies
     if y>=256-height and y <=320 and x>=64 and x<=192:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
     elif y>=320-height and y<=384 and x>= 128- width and x<=192:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 128 <= (x + width) and x <= 320 and 448 <= (y + height) and y <= 512:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 256 <= (x + width) and x <= 320 and 256 <= (y + height) and y <= 512:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 64*6 <= (x+width) and x <= 448 and 64*7 <= y+height:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 320 <= (x + width) <= 576 and 256 <= (y + height) <= 320:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 448 <= (x + width) and x <= 512 and 128 <= (y + height) and y <= 384:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 256 <= (x + width) and 256 <= (y + height) <= 320:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 384 <= (x + width) <= 448 and 448 <= (y + height):
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     elif 4*64 <= (x + width) <= 5*64 and 64 <= (y + height) <= 2*64:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
     elif x +width > 128 and x<448 and y < 192 and y+ height>128:
-        numDeaths += 1
+        hasDied(numDeaths)
         died = True
-        if numDeaths <= 3:
-            lifeColor[numDeaths - 1] = (0, 0, 0)
-
     # if the obstacle hits the edge, it moves in the opposite direction
     if obstacleX >= 9 * 64 - 20:
         obstacleVelocity = -3
