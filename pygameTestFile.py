@@ -86,7 +86,6 @@ obstacleX = 7 * 64
 obstacleY = 8 * 64
 obstacleVelocity = 3
 
-# block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
 block = pygame.image.load('block1.png')
 lightningBolt = pygame.image.load('lightningBolt.png')
 window.blit(lightningBolt, (64, 5*64))
@@ -96,14 +95,11 @@ for row in range(0, 10):
     for column in range(0, 10):
         if mazeLayout[row][column:column+1] == "W":
             walls.append([column*64, row*64])
-            # print(walls)
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
-            # print(exit)
 
 for i in range(0, len(walls)):
     window.blit(block, (walls[i][0], walls[i][1]))
-    # print(walls[i][0], walls[i][1])
 
 # paint screen one time
 pygame.display.flip()
@@ -172,7 +168,7 @@ while run:
     if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
         vel = vel*1.75
         boltReached = True
-
+    # this method increases the numDeaths by one and sets the corresponding life eclipse to black
     def hasDied(numDeaths):
         numDeaths += 1
         if numDeaths <= 3:
