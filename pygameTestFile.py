@@ -97,12 +97,10 @@ for row in range(0, 10):
         # if the character is "W", meaning Wall, the cell's coords get added to the list of walls
         if mazeLayout[row][column:column+1] == "W":
             walls.append([column*64, row*64])
+            window.blit(block, (column * 64, row * 64)) # print a wall block
         # if the character is "E", meaning Exit, the cell's coords are saved as the exit
         if mazeLayout[row][column:column+1] == "E":
             exit = [column*64, row*64]
-# for every coord pair in walls, display a block there
-for i in range(0, len(walls)):
-    window.blit(block, (walls[i][0], walls[i][1]))
 
 # paint screen one time
 pygame.display.flip()
@@ -119,7 +117,7 @@ while run:
             if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or \
                     (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
                 key = event.key
-    # reprint the wall blocks because pacman was eating into them
+    # reprint the wall blocks for every coord pair in walls, because pacman was eating into them
     for i in range(0, len(walls)):
         window.blit(block, (walls[i][0], walls[i][1]))
 

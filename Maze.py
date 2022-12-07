@@ -1,12 +1,13 @@
 import pygame
-
+import time
 pygame.init()
 
+#create a display screen to print on
 displayX = 640
 displayY = 640
 window = pygame.display.set_mode((displayX, displayY))
-pygame.display.set_caption("Continuous Movement Test")
-# show instruction screen until user clicks out
+pygame.display.set_caption("ripoff pac-man")
+#show instruction screen until user clicks out
 end_it = False
 rect1 = (255, 0, 0)
 rect2 = (255, 0, 0)
@@ -18,30 +19,37 @@ while (end_it == False):
     welcome = myfont.render("Welcome!", 1, (255, 0, 0))
     start = myfont.render("Start", 1, (0, 0, 0))
     quit = myfont.render("Quit", 1, (0, 0, 0))
+    noWalls = myfont.render("Hitting the walls will kill you.", 1, (255, 0, 0))
     instruct = myfont.render("Use the arrow keys to control the Pacman", 1, (255, 0, 0))
     extraLife = smallfont.render("Eating this allows you to gain another life:", 1, (255, 0, 0))
     obstacle = smallfont.render("Hitting this obstacle kills you:", 1, (255, 0, 0))
+    speedInstruct = smallfont.render("Eating this bolt increases speed:", 1, (255, 0, 0))
+    #if the mouse hovers over the button, it turns green
+    #if the mouse clicks the "start" button stop this loop, if the mouse clicks "quit" the program ends
     for event in pygame.event.get():
         rect1 = (255, 0, 0)
         rect2 = (255, 0, 0)
-        if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
-            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
+        if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
             rect1 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 end_it = True
-        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
-            1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
+        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
             rect2 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.quit()
     window.blit(welcome, (250, 50))
     window.blit(instruct, (50, 100))
+    window.blit(noWalls, (120, 140))
     window.blit(start, (290, 210))
     window.blit(quit, (290, 310))
-    window.blit(obstacle, (10, 500))
-    pygame.draw.ellipse(window, (80, 200, 120), (390, 503, 20, 20))
+    window.blit(obstacle, (10, 480))
+    pygame.draw.ellipse(window, (80, 200, 120), (390, 483, 20, 20))
     window.blit(extraLife, (10, 400))
     pygame.draw.ellipse(window, (255, 0, 0), (540, 403, 20, 20))
+    window.blit(speedInstruct, (10, 560))
+    block = pygame.image.load('block1.png')
+    lightningBolt = pygame.image.load('lightningBolt.png')
+    window.blit(lightningBolt, (410, 540))
     pygame.display.flip()
 window.fill([0, 0, 0])
 width = 40
@@ -50,14 +58,15 @@ x = 72
 y = 72
 vel = 4
 key = 0
-pointArr = [(x + width / 2, y + height / 2), (x + width, y + height), (x + width, y)]
+pointArr = [(x + width/2, y + height/2), (x + width, y + height), (x + width, y)]
 run = True
-pastX = 2 * width
-pastY = 2 * height
+pastX = 2*width
+pastY = 2*height
 lifeColor = [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
 numDeaths = 0
 died = False
-# 1 = right, 2 = down, 3 = left, 4 = up
+gameOver = True
+won = False
 mouthDirection = 1
 walls = []
 mazeLayout = """
@@ -77,26 +86,30 @@ obstacleX = 7 * 64
 obstacleY = 8 * 64
 obstacleVelocity = 3
 
-# block = pygame.image.load("C:\Users\olee1\\PycharmProjects\\advPythonProgGame\\block.png").convert()
 block = pygame.image.load('block1.png')
 lightningBolt = pygame.image.load('lightningBolt.png')
-window.blit(lightningBolt, (64, 5 * 64))
+window.blit(lightningBolt, (64, 5*64))
+boltReached = False
 
+# iterates through the string representation of each cell
 for row in range(0, 10):
     for column in range(0, 10):
-        if mazeLayout[row][column:column + 1] == "W":
-            walls.append([column * 64, row * 64])
-            # print(walls)
-        if mazeLayout[row][column:column + 1] == "E":
-            exit = [column * 64, row * 64]
-            # print(exit)
-
-for i in range(0, len(walls)):
-    window.blit(block, (walls[i][0], walls[i][1]))
-    # print(walls[i][0], walls[i][1])
+        # if the character is "W", meaning Wall, the cell's coords get added to the list of walls
+        if mazeLayout[row][column:column+1] == "W":
+            walls.append([column*64, row*64])
+            window.blit(block, (column*64, row*64))
+        # if the character is "E", meaning Exit, the cell's coords are saved as the exit
+        if mazeLayout[row][column:column+1] == "E":
+            exit = [column*64, row*64]
+# for every coord pair in walls, display a block there
+# for i in range(0, len(walls)):
+   # window.blit(block, (walls[i][0], walls[i][1]))
 
 # paint screen one time
 pygame.display.flip()
+
+pygame.draw.ellipse(window, (255, 0, 0), (407, 215, 20, 20)) #extra  life
+lifeEaten = False
 
 while run:
     pygame.time.delay(100)
@@ -107,9 +120,11 @@ while run:
             if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or \
                     (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
                 key = event.key
-            # pygame.key.get_pressed()
+    # reprint the wall blocks because pacman was eating into them
+    for i in range(0, len(walls)):
+        window.blit(block, (walls[i][0], walls[i][1]))
 
-    # depending on the key hit the pacman's mouth switches and he moves that way
+    #depending on the key hit the pacman's mouth switches and he moves that way
     if key == pygame.K_LEFT:
         x -= vel
         pointArr = mouthLeft()
@@ -126,96 +141,96 @@ while run:
         y += vel
         pointArr = mouthDown()
         mouthDirection = 2
-    pygame.draw.ellipse(window, (0, 0, 0),
-                        (pastX, pastY, width, height))  # past character turns black to user can't see
+    # if pacman already reached the bolt, the cell gets filled black
+    # we needed this here because pacman would get hidden under the black square if he re-entered the cell
+    if boltReached:
+        pygame.draw.rect(window, (0, 0, 0), (64, 64 * 5, 64, 64))
+    # the past character turns black to user can't see
+    pygame.draw.ellipse(window, (0, 0, 0), (pastX, pastY, width, height))
+    # draws the pacman yellow circle
     pygame.draw.ellipse(window, (255, 234, 0), (x, y, width, height))
+    # updates past coordinate values
     pastX = x
     pastY = y
+    # draws the mouth
     pygame.draw.polygon(window, (0, 0, 0), (pointArr[0], pointArr[1], pointArr[2]))
-    lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX - 20, 10, 10, 10)),
-             pygame.draw.ellipse(window, lifeColor[1], (displayX - 35, 10, 10, 10)),
-             pygame.draw.ellipse(window, lifeColor[2], (displayX - 50, 10, 10, 10))]
+    # draws the lives
+    lives = [pygame.draw.ellipse(window, lifeColor[0], (displayX-20, 10, 10, 10)), pygame.draw.ellipse(window, lifeColor[1], (displayX-35, 10, 10, 10)),pygame.draw.ellipse(window, lifeColor[2], (displayX-50, 10, 10, 10))]
 
-    # for the life that you can eat
-    if x + width >= 407 and y + height >= 215:
-        if numDeaths == 0:
-            died = True
-        else:
-            numDeaths = numDeaths - 1
-            lifeColor[numDeaths] = (255, 0, 0)
-            died = True
+    # if the extra life is uneaten, check if the pacman coordinates equal the life coordinates. If true if the numDeathes is greater than 0 add a life
+    if lifeEaten == False:
+        if 407 + 64 >= x + width >= 407 and 215 + 64 >= y + height >= 215:
+            if numDeaths == 0:
+                print("died")
+            else:
+                numDeaths = numDeaths - 1
+                lifeColor[numDeaths] = (255, 0, 0)
+            # set that is has been eaten and turn it black
+            lifeEaten = True
+            pygame.draw.ellipse(window, (0, 0, 0), (407, 215, 20, 20))
 
-    # for the lightning bolt
-    if 64 <= (x + width) <= 64 * 2 and 64 * 5 <= (y + height) <= 64 * 6:
-        vel = vel + 2
-        print("reached")
 
+    # for the lightning bolt: if pacman enters the cell with the lightning bolt, he speeds up
+    if 64 <= (x+width) <= 64*2 and 64*5 <= y <= 64*6 and not boltReached:
+        vel = vel*2
+        boltReached = True
+    # the following if/elif statements check it the pacman's coordinates equal that of the maze and if so numDeaths increase by 1, the corresponding life turns black and died equals True
     if y >= 256 - height and y <= 320 and x >= 64 and x <= 192:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
+        died = True
     elif y >= 320 - height and y <= 384 and x >= 128 - width and x <= 192:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 128 <= (x + width) and x <= 320 and 448 <= (y + height) and y <= 512:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 256 <= (x + width) and x <= 320 and 256 <= (y + height) and y <= 512:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 64 * 6 <= (x + width) and x <= 448 and 64 * 7 <= y + height:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 320 <= (x + width) <= 576 and 256 <= (y + height) <= 320:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 448 <= (x + width) and x <= 512 and 128 <= (y + height) and y <= 384:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 256 <= (x + width) and 256 <= (y + height) <= 320:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 384 <= (x + width) <= 448 and 448 <= (y + height):
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
+        died = True
     elif 4 * 64 <= (x + width) <= 5 * 64 and 64 <= (y + height) <= 2 * 64:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
+        died = True
     elif x + width > 128 and x < 448 and y < 192 and y + height > 128:
         numDeaths += 1
-        died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
-
-    # adding obstacle
-    # if the obstacle hits the edge, its velocity becomes negative
+        died = True
+    # if the obstacle hits the edge, it moves in the opposite direction
     if obstacleX >= 9 * 64 - 20:
         obstacleVelocity = -3
     elif obstacleX <= 7 * 64:
@@ -223,7 +238,7 @@ while run:
 
     obstacleX += obstacleVelocity
     pygame.draw.ellipse(window, (0, 0, 0), (
-        obstacleX - obstacleVelocity, obstacleY, 20, 20))  # past character turns black to user can't see
+    obstacleX - obstacleVelocity, obstacleY, 20, 20))  # past character turns black to user can't see
     pygame.draw.ellipse(window, (80, 200, 120), (obstacleX, obstacleY, 20, 20))
 
     # if pacman hits the obstacle, he loses a life and moves back to the start
@@ -233,69 +248,105 @@ while run:
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-
     # Printing the mouth in different directions
     def mouthDown():
-        point1 = (x + width / 2, y + height / 2)
+        point1 = (x + width/2, y + height/2)
         point2 = (x, y + height)
         point3 = (x + width, y + height)
         arr = [point1, point2, point3]
         return arr
-
-
     def mouthRight():
-        point1 = (x + width / 2, y + height / 2)
+        point1 = (x + width/2, y + height/2)
         point2 = (x + width, y + height)
         point3 = (x + width, y)
         arr = [point1, point2, point3]
         return arr
-
-
     def mouthUp():
-        point1 = (x + width / 2, y + height / 2)
+        point1 = (x + width/2, y + height/2)
         point2 = (x, y)
         point3 = (x + width, y)
         arr = [point1, point2, point3]
         return arr
-
-
     def mouthLeft():
-        point1 = (x + width / 2, y + height / 2)
+        point1 = (x + width/2, y + height/2)
         point2 = (x, y + height)
         point3 = (x, y)
         arr = [point1, point2, point3]
         return arr
-
-
-    # if it reaches the end of maze stop moving and print you win
-    if (x <= displayX - (64 + width) and y >= displayY - height and x > exit[0]):
+    #if it reaches the end of maze stop moving and print you win
+    if (x <= displayX - (64+width) and y >= displayY - height and x > exit[0]):
         vel = 0
         font = pygame.font.Font('freesansbold.ttf', 40)
         text = font.render('YOU WIN', True, (255, 0, 0))
         window.blit(text, (0, 0))
-    # else if it reaches the boundaries of the screen set one circle to black and add to numdeaths
-    elif x < 64 or y < 64 or x + width >= displayX - 64 or y + height >= displayY - 64 and (
-            x < exit[0] or x > displayX - (64 + width)):
+    #else if it reaches the boundaries of the screen set one circle to black and add to numdeaths
+    elif x < 64 or y < 64 or x + width >= displayX-64 or y + height >= displayY-64 and (x < exit[0] or x > displayX - (64+width)):
         numDeaths += 1
         died = True
         if numDeaths <= 3:
             lifeColor[numDeaths - 1] = (0, 0, 0)
 
-    if died:  # if it has died return to left corner of screen
+    if died: #if it has died return to left corner of screen
         x = 72
         y = 72
         key = pygame.K_RIGHT
         died = False
 
-    # if died more than 3 times -> game over
+    #if died more than 3 times -> game over
     if numDeaths >= 3:
         vel = 0
-        font = pygame.font.Font('freesansbold.ttf', 40)
-        text = font.render('GAME OVER', True, (255, 0, 0))
-        window.blit(text, (0, 0))
-
-    pygame.draw.ellipse(window, (255, 0, 0), (407, 215, 20, 20))  # extra  life
-
+        run = False
     pygame.display.update()
+    if (x <= displayX - (64+width) and y >= displayY - height and x > exit[0]):
+        run = False
+        gameOver = False
+        won = True
+window.fill([0, 0, 0])
+rect2 = ([255, 0, 0])
+while won:
+    pygame.draw.rect(window, rect2, (240, 280, 160, 80))
+    myfont = pygame.font.SysFont("Britannic Bold", 100)
+    smallfont = pygame.font.SysFont("Britannic Bold", 40)
+    win = myfont.render("YOU WIN!", 1, (255, 0, 0))
+    quit = smallfont.render("Quit", 1, (0, 0, 0))
+    for event in pygame.event.get():
+        rect2 = (255, 0, 0)
+        if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
+            rect1 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                end_it = True
+        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
+            rect2 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.quit()
+    window.blit(win, (150, 100))
+    window.blit(quit, (290, 310))
+    pygame.display.flip()
+while gameOver:
+    pygame.draw.rect(window, rect2, (240, 280, 160, 80))
+    myfont = pygame.font.SysFont("Britannic Bold", 100)
+    smallfont = pygame.font.SysFont("Britannic Bold", 40)
+    over = myfont.render("GAMEOVER!", 1, (255, 0, 0))
+    quit = smallfont.render("Quit", 1, (0, 0, 0))
+    for event in pygame.event.get():
+        rect2 = (255, 0, 0)
+        if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
+            rect1 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                end_it = True
+        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
+            1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
+            rect2 = (0, 255, 0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.quit()
+    window.blit(over, (120, 100))
+    window.blit(quit, (290, 310))
+    pygame.display.flip()
+
+pygame.display.flip()
 
 pygame.quit()
+
