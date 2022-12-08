@@ -294,6 +294,7 @@ while run:
         vel = 0
         run = False
     pygame.display.update()
+    #if you reach the end of the maze won becomes true and gameover become false
     if (x <= displayX - (64+width) and y >= displayY - height and x > exit[0]):
         run = False
         gameOver = False
@@ -306,14 +307,10 @@ while won:
     smallfont = pygame.font.SysFont("Britannic Bold", 40)
     win = myfont.render("YOU WIN!", 1, (255, 0, 0))
     quit = smallfont.render("Quit", 1, (0, 0, 0))
+    #if the mouse is over the button turn it green and if if clicks the button quit the game
     for event in pygame.event.get():
         rect2 = (255, 0, 0)
         if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
-            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
-            rect1 = (0, 255, 0)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                end_it = True
-        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
             1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
             rect2 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -327,14 +324,10 @@ while gameOver:
     smallfont = pygame.font.SysFont("Britannic Bold", 40)
     over = myfont.render("GAMEOVER!", 1, (255, 0, 0))
     quit = smallfont.render("Quit", 1, (0, 0, 0))
+    # if the mouse is over the button turn it green and if if clicks the button quit the game
     for event in pygame.event.get():
         rect2 = (255, 0, 0)
         if pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
-            1] >= 180 and pygame.mouse.get_pos()[1] <= 240:
-            rect1 = (0, 255, 0)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                end_it = True
-        elif pygame.mouse.get_pos()[0] >= 240 and pygame.mouse.get_pos()[0] <= 400 and pygame.mouse.get_pos()[
             1] >= 280 and pygame.mouse.get_pos()[1] <= 340:
             rect2 = (0, 255, 0)
             if event.type == pygame.MOUSEBUTTONDOWN:
